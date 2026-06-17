@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Production build output
+dist/
+build/
+
+# Testing and Coverage
+coverage/
+test-run.log
+
+# Storybook
+storybook-static/
+debug-storybook.log
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Environment variables (keep your secrets safe!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
