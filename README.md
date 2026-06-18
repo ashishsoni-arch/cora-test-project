@@ -31,7 +31,7 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your machine.
 ### Installation
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 ### 3. Start the Development Server

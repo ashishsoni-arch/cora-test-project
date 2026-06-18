@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DataTable from './DataTable';
-
-interface Person {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
+import type { Person } from '../../types/datatable';
 
 const meta: Meta<typeof DataTable> = {
   title: 'Components/DataTable',

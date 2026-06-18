@@ -2,9 +2,10 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import DataTable, { type DataTableColumn } from '../../components/DataTable';
-import SearchInput from '../../components/SearchInput';
-import { useAuthStore, type AuthUser } from '../../store/auth.store';
+import DataTable, { type DataTableColumn } from '../../components/DataTable/DataTable';
+import SearchInput from '../../components/SearchInput/SearchInput';
+import { useAuthStore } from '../../store/auth.store';
+import { AuthUser } from '../../types/auth';
 
 // --- ZOD SCHEMA ---
 const userSchema = z.object({
