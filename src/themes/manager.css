@@ -1,0 +1,8 @@
+@layer base {
+  .theme-manager {
+    --bg-app: #faf5ff; /* fuchsia-50 */
+    --color-primary: #8b5cf6; /* violet-500 */
+    --color-primary-hover: #7c3aed; /* violet-600 */
+    --text-main: #2e1065; /* violet-950 */
+  }
+}

@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { useAuthStore } from '../store/auth.store';
-import { demoUsers } from '../lib/demoUsers';
+import { useAuthStore } from '../../store/auth.store';
+import { demoUsers } from '../../lib/demoUsers';
+import { AuthUser } from 'src/types/auth';
 
 const loginSchema = z.object({
   email: z.email({ message: 'Enter a valid email' }),
@@ -15,7 +16,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const login = useAuthStore((state: { login: (user: AuthUser) => void }) => state.login);
   const [authError, setAuthError] = useState<string | null>(null);
 
   const {

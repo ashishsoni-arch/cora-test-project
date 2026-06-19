@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import request, { requestAll } from '../lib/api';
+import request, { requestAll } from '../../lib/api';
 
 interface DashboardData {
   summary: { activeUsers: number; totalRevenue: number; pendingTasks: number };

@@ -1,15 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import About from './About';
-import Contact from './Contact';
-import Login from './Login';
+import Home from './Home/Home';
+import About from './About/About';
+import Contact from './Contact/Contact';
+import Login from './Login/Login';
 import DashboardLayout from './dashboard/DashboardLayout';
 import Overview from './dashboard/Overview';
 import Reports from './dashboard/Reports';
 import Users from './dashboard/Users';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthUser, useAuthStore } from '../store/auth.store';
+import { useAuthStore } from '../store/auth.store';
+import { AuthUser } from '../types/auth';
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 

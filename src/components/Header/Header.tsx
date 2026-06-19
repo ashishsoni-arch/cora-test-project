@@ -1,13 +1,10 @@
 import { Link } from 'react-router-dom';
+import type { HeaderProps } from '../../types/header';
 
 const navItems = [
   { label: 'About', to: '/about' },
   { label: 'Login', to: '/login' },
 ];
-
-interface HeaderProps {
-  showTopBanner?: boolean;
-}
 
 const Header = ({ showTopBanner = false }: HeaderProps) => (
   <header className="relative">

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useFetchDashboardData } from '../../hooks/useFetchDashboardData';
+import { useFetchDashboardData } from '../../hooks/useFetchDashboardData/useFetchDashboardData';
 
 const Overview = () => {
   const { data, isLoading, isError } = useFetchDashboardData();

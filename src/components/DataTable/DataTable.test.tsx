@@ -1,12 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import DataTable from './DataTable';
-
-interface Person {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
+import type { Person } from '../../types/datatable';
 
 describe('DataTable', () => {
   it('renders an empty state when no rows exist', () => {

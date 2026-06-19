@@ -1,8 +1,10 @@
-import { useMemo, type ReactNode } from 'react';
+import { type ReactNode, isValidElement } from 'react';
 
 // GENERIC: <T> represents whatever data model is passed into the table
 export interface DataTableColumn<T> {
   header: string;
+  // Optional unique ID in case you have duplicate/empty headers
+  id?: string;
   // accessor can be a strict key of T, or a render function returning a ReactNode
   accessor: keyof T | ((row: T) => ReactNode);
   width?: string;
@@ -16,9 +18,7 @@ export interface DataTableProps<T> {
 }
 
 export function DataTable<T>({ columns, data, rowKey, emptyState }: DataTableProps<T>) {
-  const rows = useMemo(() => data, [data]);
-
-  if (!rows.length) {
+  if (!data.length) {
     return (
       <div className="rounded-[2rem] border border-slate-200 bg-slate-50 p-8 text-slate-600">
         {emptyState ?? 'No records found.'}
@@ -31,9 +31,10 @@ export function DataTable<T>({ columns, data, rowKey, emptyState }: DataTablePro
       <table className="min-w-full divide-y divide-slate-200 text-sm">
         <thead className="bg-slate-100 text-slate-500">
           <tr>
-            {columns.map((column) => (
+            {columns.map((column, index) => (
               <th
-                key={column.header}
+                // Use id if provided, fallback to header, fallback to index
+                key={column.id || column.header || `col-${index}`}
                 className={`px-6 py-4 text-left font-semibold ${column.width ?? ''}`}
               >
                 {column.header}
@@ -42,17 +43,25 @@ export function DataTable<T>({ columns, data, rowKey, emptyState }: DataTablePro
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-200">
-          {rows.map((row) => (
+          {data.map((row) => (
             <tr key={rowKey(row)} className="hover:bg-slate-50 transition-colors">
-              {columns.map((column) => {
-                // Strict type-safe cell rendering
-                const cell =
+              {columns.map((column, index) => {
+                const columnKey = column.id || column.header || `col-${index}`;
+
+                // Strict type-safe cell rendering with safety check
+                const cellValue =
                   typeof column.accessor === 'function'
                     ? column.accessor(row)
-                    : (row[column.accessor] as ReactNode);
+                    : row[column.accessor];
+
+                // Prevent React from crashing if the value is an un-renderable object
+                const cell =
+                  typeof cellValue === 'object' && cellValue !== null && !isValidElement(cellValue)
+                    ? JSON.stringify(cellValue)
+                    : (cellValue as ReactNode);
 
                 return (
-                  <td key={column.header} className="px-6 py-4 align-middle text-slate-700">
+                  <td key={columnKey} className="px-6 py-4 align-middle text-slate-700">
                     {cell}
                   </td>
                 );

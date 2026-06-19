@@ -1,9 +1,15 @@
-module.exports = {
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+export default {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      boxShadow: {
-        card: '0 25px 50px -12px rgba(15, 23, 42, 0.25)',
+      colors: {
+        // Now you can use classes like `bg-brand`, `text-brand`, `bg-app`
+        app: 'var(--bg-app)',
+        brand: {
+          DEFAULT: 'var(--color-primary)',
+          hover: 'var(--color-primary-hover)',
+        },
+        main: 'var(--text-main)',
       },
     },
   },

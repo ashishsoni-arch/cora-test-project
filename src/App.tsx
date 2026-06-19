@@ -1,28 +1,30 @@
 import { Suspense, lazy } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuthStore } from './store/auth.store';
-import ProtectedRoute from './components/ProtectedRoute';
-import PageSkeleton from './components/PageSkeleton';
-import Header from './components/Header';
-import { withErrorBoundary } from './components/hoc/withErrorBoundary';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import PageSkeleton from './components/PageSkeleton/PageSkeleton';
+import Header from './components/Header/Header';
+import { withErrorBoundary } from './components/hoc/withErrorBoundary/withErrorBoundary';
+import { useRoleTheme } from './hooks/useRoleTheme/useRoleTheme';
 
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Contact = lazy(() => import('./pages/Contact'));
-const Login = lazy(() => import('./pages/Login'));
+const Home = lazy(() => import('./pages/Home/Home'));
+const About = lazy(() => import('./pages/About/About'));
+const Contact = lazy(() => import('./pages/Contact/Contact'));
+const Login = lazy(() => import('./pages/Login/Login'));
 const DashboardLayout = lazy(() => import('./pages/dashboard/DashboardLayout'));
 const DashboardOverview = lazy(() => import('./pages/dashboard/Overview'));
 const DashboardUsers = lazy(() => import('./pages/dashboard/Users'));
 const DashboardReports = lazy(() => import('./pages/dashboard/Reports'));
 
 function AppContent() {
+  useRoleTheme(); // Initializes global theme!
   const { user } = useAuthStore();
   const location = useLocation();
   const showTopBanner = location.pathname === '/';
   const showHeader = !location.pathname.startsWith('/dashboard');
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-app text-main transition-colors duration-300">
       {showHeader && <Header showTopBanner={showTopBanner} />}
       <Suspense fallback={<PageSkeleton />}>
         <Routes>
