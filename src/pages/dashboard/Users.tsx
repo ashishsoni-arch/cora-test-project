@@ -6,8 +6,8 @@ import DataTable, { type DataTableColumn } from '../../components/DataTable/Data
 import SearchInput from '../../components/SearchInput/SearchInput';
 import { useAuthStore } from '../../store/auth.store';
 import { AuthUser } from '../../types/auth';
+import { MOCK_USERS } from '../../constants/mockData';
 
-// --- ZOD SCHEMA ---
 const userSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.email({ message: 'Please enter a valid email address.' }),
@@ -16,29 +16,19 @@ const userSchema = z.object({
 
 type UserFormValues = z.infer<typeof userSchema>;
 
-// --- DISCRIMINATED UNION ---
 type UserFormState =
   | { status: 'idle' }
   | { status: 'adding' }
   | { status: 'editing'; user: AuthUser };
 
-// Mock Initial Data
-const MOCK_USERS: AuthUser[] = [
-  { id: '1', name: 'Avery Chen', email: 'avery@cora.com', role: 'admin' },
-  { id: '2', name: 'Jordan Lee', email: 'jordan@cora.com', role: 'manager' },
-];
-
 const Users = () => {
-  const currentUser = useAuthStore((state) => state.user);
+  const currentUser = useAuthStore((state: { user: AuthUser | null }) => state.user);
   const isAdmin = currentUser?.role === 'admin';
 
   const [users, setUsers] = useState<AuthUser[]>(MOCK_USERS);
   const [formState, setFormState] = useState<UserFormState>({ status: 'idle' });
-
-  // NEW: State for our search feature
   const [searchTerm, setSearchTerm] = useState('');
 
-  // --- REACT-HOOK-FORM SETUP ---
   const {
     register,
     handleSubmit,
@@ -60,9 +50,6 @@ const Users = () => {
       reset({ name: '', email: '', role: 'user' });
     }
   }, [formState, reset]);
-
-  // --- OPTIMIZED ACTIONS ---
-  // Wrapped in useCallback so they don't force the columns to recreate on every keystroke!
 
   const handleSearch = useCallback((query: string) => {
     setSearchTerm(query);
@@ -87,8 +74,6 @@ const Users = () => {
     setFormState({ status: 'idle' });
   };
 
-  // --- DATA FILTERING ---
-  // Only recalculates when the users array or search term changes
   const filteredUsers = useMemo(() => {
     if (!searchTerm.trim()) return users;
 
@@ -102,7 +87,6 @@ const Users = () => {
     );
   }, [users, searchTerm]);
 
-  // --- COLUMNS ---
   const columns = useMemo<Array<DataTableColumn<AuthUser>>>(() => {
     const baseColumns: Array<DataTableColumn<AuthUser>> = [
       { header: 'Name', accessor: 'name' },
@@ -117,7 +101,7 @@ const Users = () => {
           <div className="flex gap-4">
             <button
               onClick={() => handleEditClick(row)}
-              className="text-sky-600 hover:text-sky-800 font-semibold transition"
+              className="text-brand hover:text-brand-hover font-semibold transition-colors"
             >
               Edit
             </button>
@@ -138,14 +122,12 @@ const Users = () => {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">User Management</h1>
           <p className="text-slate-500">Admin-only access to the list of platform users.</p>
         </div>
 
-        {/* Search & Actions Container */}
         <div className="flex items-center gap-4">
           <div className="w-full sm:w-64">
             <SearchInput onSearch={handleSearch} />
@@ -154,7 +136,7 @@ const Users = () => {
           {isAdmin && (
             <button
               onClick={() => setFormState({ status: 'adding' })}
-              className="whitespace-nowrap rounded-full bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+              className="whitespace-nowrap rounded-full bg-brand hover:bg-brand-hover px-5 py-2.5 text-sm font-semibold text-white transition-colors"
             >
               + Add User
             </button>
@@ -162,11 +144,8 @@ const Users = () => {
         </div>
       </div>
 
-      {/* Data Table */}
-      {/* Notice we pass 'filteredUsers' now instead of the raw 'users' state */}
       <DataTable<AuthUser> columns={columns} data={filteredUsers} rowKey={(row) => row.id} />
 
-      {/* MODAL OVERLAY */}
       {formState.status !== 'idle' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-[2rem] bg-white p-8 shadow-2xl">
@@ -185,7 +164,7 @@ const Users = () => {
                   className={`w-full rounded-xl border px-4 py-2 outline-none transition focus:ring-2 ${
                     errors.name
                       ? 'border-rose-300 focus:border-rose-400 focus:ring-rose-200'
-                      : 'border-slate-300 focus:border-sky-400 focus:ring-sky-200'
+                      : 'border-slate-300 focus:border-brand focus:ring-brand/30'
                   }`}
                   {...register('name')}
                 />
@@ -202,7 +181,7 @@ const Users = () => {
                   className={`w-full rounded-xl border px-4 py-2 outline-none transition focus:ring-2 ${
                     errors.email
                       ? 'border-rose-300 focus:border-rose-400 focus:ring-rose-200'
-                      : 'border-slate-300 focus:border-sky-400 focus:ring-sky-200'
+                      : 'border-slate-300 focus:border-brand focus:ring-brand/30'
                   }`}
                   {...register('email')}
                 />
@@ -220,7 +199,7 @@ const Users = () => {
                   className={`w-full rounded-xl border px-4 py-2 outline-none transition focus:ring-2 ${
                     errors.role
                       ? 'border-rose-300 focus:border-rose-400 focus:ring-rose-200'
-                      : 'border-slate-300 focus:border-sky-400 focus:ring-sky-200'
+                      : 'border-slate-300 focus:border-brand focus:ring-brand/30'
                   }`}
                   {...register('role')}
                 >
@@ -241,7 +220,7 @@ const Users = () => {
                 </button>
                 <button
                   type="submit"
-                  className="rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-sky-700"
+                  className="rounded-full bg-brand hover:bg-brand-hover px-5 py-2.5 text-sm font-semibold text-white transition-colors"
                 >
                   Save User
                 </button>

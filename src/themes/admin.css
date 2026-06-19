@@ -1,0 +1,8 @@
+@layer base {
+  .theme-admin {
+    --bg-app: #111827; /* gray-900 */
+    --color-primary: #ef4444; /* red-500 */
+    --color-primary-hover: #dc2626; /* red-600 */
+    --text-main: #f9fafb; /* gray-50 */
+  }
+}

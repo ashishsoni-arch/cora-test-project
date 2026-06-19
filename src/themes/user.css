@@ -1,0 +1,9 @@
+@layer base {
+  :root,
+  .theme-user {
+    --bg-app: #f8fafc; /* slate-50 */
+    --color-primary: #0284c7; /* sky-600 */
+    --color-primary-hover: #0369a1; /* sky-700 */
+    --text-main: #0f172a; /* slate-900 */
+  }
+}
